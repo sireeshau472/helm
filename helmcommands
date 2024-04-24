@@ -1,0 +1,161 @@
+
+Helm registry login
+====================
+======================
+helm registry login --username [ur username] --password [ur password] example.azurecr.io (old)
+
+ex: helm registry login --username testuser --password testuserpassword123  example.azurecr.io
+
+ways to install helm charts
+how to create umbrella charts
+
+helm dependency update
+
+how to organise values file for umbrella charts
+===================================
+Helm repo
+================
+================
+There are five repo commands provided by Helm which can be used for add,list,remove,update,index the chart repository.
+
+add : Add chart repository
+list : List chart repository
+update : Update the chart information locally
+index : For generating the index file
+remove : Remove chart repository
+'add' Helm Chart repository:
+***************************
+To add any chart repository you should know the name and repository url.
+
+Ex: - We are going to add bitnami repository.
+
+
+helm repo add <REPOSITORY_NAME> <REPOSITORY_URL>
+ex: helm repo add bitnami https://charts.bitnami.com/bitnami
+
+
+to verify repo: helm search repo bitnami (It should return you back with all the charts which are available inside bitnami repository)
+
+to list helm repos: helm repo list
+to update helpm chart repo :    helm repo update
+to crate index to helm chart: helm repo index helloworld
+to remove helm chart  repo : helm repo remove reponame
+ex: helm repo remove bitnami
+
+helm search hub wordpress ( After running the above command it should return you with the list of repos available on the Helm Hub)
+
+helm search hub wordpress  --max-col-width=0 ( to see the complete repo url)
+
+helm search repo wordpress --versions ( to check wordpress version)
+
+helm show readme bitnami/wordpress --version 10.0.3 ( to see readme file)
+*********************************************************************************
+
+
+To search charts in repo
+--------------
+Helm search hub mysql
+
+To search available repo
+-------------------
+Helm search repo stable
+
+To add repo
+-------- 
+Helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+
+helm repo list 
+
+helm search repo stable/mysql
+
+helm repo update
+
+helm search repo stable/mysql
+
+helm install stable/mysql --generate-name
+or
+helm install  myairflow stable/airflow
+
+helm create mychart
+
+helm get manifest releaenaem-test
+
+helm install --debug --dry-run  releasename chartname
+
+helm install --dry-run --debug --set costCode=000dd relaesename chartname
+
+helm package repotest
+
+helm search repo -l chartname
+
+helm push chartname reponame
+
+helm repo update
+
+helm repo  remove reponame
+
+helm upgarde chartname reponame/chartname
+
+helm history deploymentname
+
+helm upgrade deploymentname reponame/chartname
+
+helm rollback deploymentname 2 (here2 is revision number)
+
+helm dependency build  ./chartname
+
+helm dependency update ./chartname
+
+helm status chartname >> to check deployment status
+
+To test deployments:
+
+helm lint chartname
+
+Umbrella charts
+============
+https://faun.pub/helm-conditions-and-tagging-for-umbrella-charts-f0ca9f6bb499
+
+
+helm dependency update mybigchart
+
+helm dependency list mybigchar
+
+
+Sometimes we might not need to update any existing dependent version. This way you can prevent any compatibility issues that might arise with new versions.
+------------------------
+helm dependency build mybigchart
+
+helm install myapp myrepo/myapp --set database.enabled=true
+helm install myapp myrepo/myapp --set tags.backend=false
+
+helm install [Relesaename]  [path to chart] --values [path-to-Global.OnPrem.Values.yaml]  -namespace [namespace] --set-file deployment_toml=config/deployment.toml
+ hn template testchart .  --values  ../Global.Azure.Values.yaml  -s templates/configMap.yaml
+helm test chartname
+
+helm get notes deplymentname
+
+helm get values deploymentname
+
+helm get manifest deploymentname
+
+===========================================================
+helm  template  . relaesename  --values .\Global.Azure.Values.yaml --dry-run --debug
+
+to push helm repo
+=============
+
+ microk8s helm package vault
+
+helm install [Relesaename]  [path to chart] --values [path-to-Global.Values.yaml]  -namespace [namespace] --set-file deployment_toml=config/deployment.toml	 
+	 
+	 
+microk8s helm push vault-0.22.1.tgz oci://example.azurecr.io/helm/example-vault
+ 
+
+
+helm registry login --username testuser --password-stdin https://example.azurecr.io <<< exmpaepassword@123 -n namespacename 
+
+
+
+kubectl create secret docker-registry example --docker-server=https://example.azurecr.io --docker-username=testuser --docker-password=mypaaws@123 -n namespace
